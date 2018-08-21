@@ -2,6 +2,7 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('#connecting');
+var word = document.querySelector('#word').innerText.toLowerCase().trim();
 
 var stompClient = null;
 var username = null;
@@ -63,7 +64,10 @@ function onMessageReceived(payload) {
     } else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' left!';
-    }else {
+    }else if (message.content === word){
+        messageElement.classList.add('event-message');
+        message.content = message.sender + ' wrote right answer!';
+    } else {
         messageElement.classList.add('chat-message');
         var usernameElement = document.createElement('strong');
         usernameElement.classList.add('nickname');

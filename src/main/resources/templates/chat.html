@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/main.css}" />
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!-- https://cdnjs.com/libraries/sockjs-client -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
     <!-- https://cdnjs.com/libraries/stomp.js/ -->
@@ -15,8 +16,32 @@
 <body>
 
     <div>
-        <input id="hex" placeholder="enter hex color"></input>
-        <canvas id="draw" style="margin:0; padding:0"></canvas>
+        <a id="word">ANSWER</a>
+    </div>
+
+    <button id="myButton">OPEN</button>
+    <div id="myModal" class="modal modal-sm">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <table>
+                <tr>
+                    <td>
+                        <button id="Button1">Click1</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button id="Button2">Click1</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button id="Button3">Click1</button>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
     </div>
 
     <div id="chat-container" style="position: absolute; top: 0; right: 0">
@@ -35,15 +60,32 @@
         </ul>
         <form id="messageForm" name="messageForm">
             <div class="input-message">
-                <input type="text" id="message" autocomplete="off"
-                       placeholder="Type a message..."/>
+                <input type="text" id="message" autocomplete="off" placeholder="Type a message..."/>
                 <button type="submit">Send</button>
             </div>
         </form>
     </div>
 
 <script th:src="@{/js/main.js}"></script>
-<script th:src="@{/js/app.js}"></script>
+<script>
+    var modal = document.getElementById("myModal");
+    var button = document.getElementById("myButton");
+    var span = document.getElementsByClassName("close")[0];
+
+    button.onclick = function () {
+        modal.style.display = "block"; //open
+    };
+
+    span.onclick = function () {
+        modal.style.display = "none"; //close
+    };
+
+    window.onclick = function (ev) {
+        if (ev.target === modal){
+            modal.style.display = "none"; //close
+        }
+    }
+</script>
 
 </body>
 </html>

@@ -14,6 +14,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 @Component
 public class WebSocketEventListener {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
+    private static Set<String> users = Collections.synchronizedSet(new HashSet<>());
 
     private final SimpMessageSendingOperations messagingTemplate;
 
@@ -25,11 +26,19 @@ public class WebSocketEventListener {
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         logger.info("Received a new web socket connection");
+
+        //String id = StompHeaderAccessor.wrap(event.getMessage()).getSessionId();
+        //users.add(id);
+        //System.out.println("add " + id);
     }
 
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
+
+        //String id = headerAccessor.getSessionId();
+        //users.remove(headerAccessor.getSessionId());
+        //System.out.println("remove " + id);
 
         String username = (String) headerAccessor.getSessionAttributes().get("username");
 

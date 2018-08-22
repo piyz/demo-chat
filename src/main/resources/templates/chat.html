@@ -14,32 +14,38 @@
 
 </head>
 <body>
+    <!--<div>
+        <button id="randomButton">RANDOM</button>
 
-    <div>
-        <a id="word">ANSWER</a>
-    </div>
+        <script>
+            var words = ["monitor", "program", "gaming", "network", "apple", "banana"];
+            var randomButton = document.getElementById("randomButton");
+            randomButton.onclick = function () {
+                document.getElementById("word").innerHTML = words[Math.floor(Math.random() * words.length)];
+            };
+        </script>
+    </div> -->
 
-    <button id="myButton">OPEN</button>
+    <!--<button hidden id="myButton">OPEN</button>-->
     <div id="myModal" class="modal modal-sm">
         <div class="modal-content">
             <span class="close">&times;</span>
             <table>
                 <tr>
                     <td>
-                        <button id="Button1">Click1</button>
+                        <button id="Button1"></button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <button id="Button2">Click1</button>
+                        <button id="Button2"></button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <button id="Button3">Click1</button>
+                        <button id="Button3"></button>
                     </td>
                 </tr>
-
             </table>
         </div>
     </div>
@@ -62,6 +68,8 @@
             <div class="input-message">
                 <input type="text" id="message" autocomplete="off" placeholder="Type a message..."/>
                 <button type="submit">Send</button>
+                <button type="button" id="startButton">Start</button>
+                <a id="word"></a>
             </div>
         </form>
     </div>
@@ -69,22 +77,48 @@
 <script th:src="@{/js/main.js}"></script>
 <script>
     var modal = document.getElementById("myModal");
-    var button = document.getElementById("myButton");
+    //var button = document.getElementById("myButton");
     var span = document.getElementsByClassName("close")[0];
-
+    /*
     button.onclick = function () {
         modal.style.display = "block"; //open
     };
-
+     */
     span.onclick = function () {
         modal.style.display = "none"; //close
     };
-
     window.onclick = function (ev) {
         if (ev.target === modal){
             modal.style.display = "none"; //close
         }
-    }
+    };
+
+    var button1 = document.getElementById("Button1");
+    var button2 = document.getElementById("Button2");
+    var button3 = document.getElementById("Button3");
+    button1.onclick = function () {
+        document.getElementById("word").innerHTML = document.getElementById("Button1").innerText;
+        modal.style.display = "none";
+        inGame = true;
+    };
+    button2.onclick = function () {
+        document.getElementById("word").innerHTML = document.getElementById("Button2").innerText;
+        modal.style.display = "none";
+        inGame = true;
+    };
+    button3.onclick = function () {
+        document.getElementById("word").innerHTML = document.getElementById("Button3").innerText;
+        modal.style.display = "none";
+        inGame = true;
+    };
+
+
+    var startButton = document.getElementById("startButton");
+    startButton.onclick = function () {
+        document.getElementById("word").innerHTML = words[Math.floor(Math.random() * words.length)]; //start game
+        document.getElementById("startButton").disabled = true; //hidden = true?
+        inGame = true;
+    };
 </script>
 
 </body>

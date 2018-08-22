@@ -2,7 +2,8 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('#connecting');
-var word = document.querySelector('#word').innerText.toLowerCase().trim();
+var words = ["monitor", "program", "gaming", "network", "apple", "banana"];
+var inGame = false;
 
 var stompClient = null;
 var username = null;
@@ -54,6 +55,7 @@ function sendMessage(event) {
 }
 
 function onMessageReceived(payload) {
+    var word = document.querySelector('#word').innerHTML.toLowerCase().trim();
     var message = JSON.parse(payload.body);
 
     var messageElement = document.createElement('li');
@@ -64,9 +66,15 @@ function onMessageReceived(payload) {
     } else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' left!';
-    }else if (message.content === word){
+    }else if (message.content === word && inGame === true){
         messageElement.classList.add('event-message');
         message.content = message.sender + ' wrote right answer!';
+        document.getElementById("Button1").innerText = words[Math.floor(Math.random() * words.length)];
+        document.getElementById("Button2").innerText = words[Math.floor(Math.random() * words.length)];
+        document.getElementById("Button3").innerText = words[Math.floor(Math.random() * words.length)];
+
+        modal.style.display = "block";
+        inGame = false;
     } else {
         messageElement.classList.add('chat-message');
         var usernameElement = document.createElement('strong');

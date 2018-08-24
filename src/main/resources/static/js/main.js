@@ -2,8 +2,6 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('#connecting');
-var words = ["monitor", "program", "gaming", "network", "apple", "banana"];
-var inGame = false;
 
 var stompClient = null;
 var username = null;
@@ -24,6 +22,8 @@ connect();
 function onConnected() {
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/publicChatRoom', onMessageReceived);
+
+    stompClient.subscribe("/topic/publicCurrentWordField", onCurrentWordChange);
 
     // Tell your username to the server
     stompClient.send("/app/chat.addUser",
@@ -54,8 +54,14 @@ function sendMessage(event) {
     event.preventDefault();
 }
 
+//coming from websocket controller
+function onCurrentWordChange(payload) {
+    var message = JSON.parse(payload.body);
+    document.getElementById("word").innerText = message.content;
+}
+
+//coming from websocket controller
 function onMessageReceived(payload) {
-    var word = document.querySelector('#word').innerHTML.toLowerCase().trim();
     var message = JSON.parse(payload.body);
 
     var messageElement = document.createElement('li');
@@ -66,15 +72,9 @@ function onMessageReceived(payload) {
     } else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' left!';
-    }else if (message.content === word && inGame === true){
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' wrote right answer!';
-        document.getElementById("Button1").innerText = words[Math.floor(Math.random() * words.length)];
-        document.getElementById("Button2").innerText = words[Math.floor(Math.random() * words.length)];
-        document.getElementById("Button3").innerText = words[Math.floor(Math.random() * words.length)];
-
-        modal.style.display = "block";
-        inGame = false;
+    }else if (document.getElementById("word").innerText === message.content){
+        message.content = message.sender + ": congratulations, it's right!";
+        stompClient.send("/app/field.change", {}, JSON.stringify(payload));
     } else {
         messageElement.classList.add('chat-message');
         var usernameElement = document.createElement('strong');
